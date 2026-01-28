@@ -1,0 +1,12 @@
+@use "src/styles/variables" as *;
+
+.vm-bar-hits-options {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  z-index: 2;
+
+  &-item {
+    padding: 0 $padding-global;
+  }
+}
