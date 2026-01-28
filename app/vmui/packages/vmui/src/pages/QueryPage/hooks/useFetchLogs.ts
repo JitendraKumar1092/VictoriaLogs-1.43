@@ -8,6 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import { useAppState } from "../../../state/common/StateContext";
 import { mergeSearchParams } from "../../../utils/query-string";
 import { TenantType } from "../../../components/Configurators/GlobalSettings/TenantsConfiguration/Tenants";
+import { selectedStream, streamReady } from "../../../state/StreamFilter";
 
 interface FetchLogsParams {
   query?: string;
@@ -46,8 +47,14 @@ export const useFetchLogs = (defaultQuery?: string, defaultLimit?: number) => {
       throw new Error("query is required to /select/logsql/query.");
     }
 
+   const rawQuery = query.trim();
+    let finalQuery = rawQuery;
+    if (selectedStream) {
+      finalQuery = `{stream="${selectedStream}"} | ${rawQuery}`;
+    }
+
     const body = new URLSearchParams({
-      query: query.trim(),
+      query: finalQuery,
     });
 
     if (limit) {
@@ -88,6 +95,10 @@ export const useFetchLogs = (defaultQuery?: string, defaultLimit?: number) => {
     isDownload = false,
   }: FetchLogsParams) => {
     abortControllerRef.current = new AbortController();
+    if (streamReady && !selectedStream) {
+        setError("Select a stream");
+        return false;
+      }
     const { signal } = abortControllerRef.current;
     const options = buildOptions({ signal });
 

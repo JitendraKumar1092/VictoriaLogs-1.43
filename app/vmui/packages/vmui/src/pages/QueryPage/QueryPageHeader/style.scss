@@ -7,7 +7,7 @@
 
   &-top {
     display: grid;
-    grid-template-columns: 8fr 2fr;
+    grid-template-columns: auto 1fr auto;;
     align-items: flex-start;
     justify-content: center;
     gap: $padding-global;

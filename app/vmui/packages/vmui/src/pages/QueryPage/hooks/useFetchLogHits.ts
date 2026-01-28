@@ -10,6 +10,7 @@ import { useSearchParams } from "react-router-dom";
 import { useAppState } from "../../../state/common/StateContext";
 import { GRAPH_QUERY_MODE } from "../../../components/Chart/BarHitsChart/types";
 import useProcessStatsQueryRange from "./useProcessStatsQueryRange";
+import { selectedStream, streamReady } from "../../../state/StreamFilter";
 
 
 
@@ -56,9 +57,17 @@ export const useFetchLogHits = (defaultQuery = "*") => {
 
   const getOptions = ({ query = defaultQuery, period, extraParams, signal, fieldsLimit, field }: OptionsParams) => {
     const { start, end, step, offset } = getHitsTimeParams(period);
+     const rawQuery = query.trim();
 
+    let finalQuery = rawQuery;
+
+    if (selectedStream) {
+
+      finalQuery = `{stream="${selectedStream}"} | ${rawQuery}`;
+
+    }
     const params = new URLSearchParams({
-      query: query.trim(),
+      query: finalQuery,
       step: `${step}ms`,
       offset: `${offset}ms`,
       start: start.toISOString(),
@@ -103,7 +112,10 @@ export const useFetchLogHits = (defaultQuery = "*") => {
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
     const { signal } = abortControllerRef.current;
-
+    if (streamReady && !selectedStream) {
+        setError("Select a stream");
+        return;
+      }
     const id = Date.now();
     setIsLoading(prev => ({ ...prev, [id]: true }));
     setError(undefined);

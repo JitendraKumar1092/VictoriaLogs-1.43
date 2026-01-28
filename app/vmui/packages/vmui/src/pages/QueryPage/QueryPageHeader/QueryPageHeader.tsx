@@ -1,4 +1,4 @@
-import { FC, useEffect } from "preact/compat";
+import { FC, useEffect , useState } from "preact/compat";
 import { InfoIcon, PlayIcon, SpinnerIcon, WikiIcon } from "../../../components/Main/Icons";
 import "./style.scss";
 import classNames from "classnames";
@@ -14,6 +14,7 @@ import useBoolean from "../../../hooks/useBoolean";
 import { useQuickAutocomplete } from "../../../hooks/useQuickAutocomplete";
 import { AUTOCOMPLETE_QUICK_KEY } from "../../../components/Main/ShortcutKeys/constants/keyList";
 import Tooltip from "../../../components/Main/Tooltip/Tooltip";
+import StreamDropdown from "../../../components/StreamDropdown/StreamDropdown";
 
 interface Props {
   query: string;
@@ -40,6 +41,7 @@ const QueryPageHeader: FC<Props> = ({
   const { autocomplete, queryHistory, autocompleteQuick } = useQueryState();
   const queryDispatch = useQueryDispatch();
   const setQuickAutocomplete = useQuickAutocomplete();
+   const [selectedStream, setSelectedStream] = useState("");
 
   const { value: awaitQuery, setValue: setAwaitQuery } = useBoolean(false);
 
@@ -90,6 +92,7 @@ const QueryPageHeader: FC<Props> = ({
       })}
     >
       <div className="vm-query-page-header-top">
+      <StreamDropdown onSelect={setSelectedStream} />
         <QueryEditor
           value={query}
           autocomplete={autocomplete || autocompleteQuick}
