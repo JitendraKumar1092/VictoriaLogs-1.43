@@ -49,7 +49,7 @@ export const useFetchLogs = (defaultQuery?: string, defaultLimit?: number) => {
 
    const rawQuery = query.trim();
     let finalQuery = rawQuery;
-    if (selectedStream) {
+   if (selectedStream && selectedStream !== "__all__") {
       finalQuery = `{stream="${selectedStream}"} | ${rawQuery}`;
     }
 

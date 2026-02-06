@@ -61,7 +61,7 @@ export const useFetchLogHits = (defaultQuery = "*") => {
 
     let finalQuery = rawQuery;
 
-    if (selectedStream) {
+    if (selectedStream && selectedStream !== "__all__"){
 
       finalQuery = `{stream="${selectedStream}"} | ${rawQuery}`;
 

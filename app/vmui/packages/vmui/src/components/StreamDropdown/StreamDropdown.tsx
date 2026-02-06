@@ -60,12 +60,16 @@ const StreamDropdown = ({ onSelect }: Props) => {
       <option value="" disabled>
         Select stream
       </option>
+      
 
       {streams.map((s) => (
         <option key={s.name} value={s.name}>
           {s.name}
         </option>
       ))}
+     <option value="__all__">
+        All streams (slow queries)
+      </option>
     </select>
   </label>
 );
