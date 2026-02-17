@@ -8,7 +8,7 @@ type Stream = {
 };
 
 type Props = {
-  onSelect?: (value: string) => void; // 👈 add this
+  onSelect?: (value: string) => void; 
 };
 
 const StreamDropdown = ({ onSelect }: Props) => {
@@ -18,7 +18,7 @@ const StreamDropdown = ({ onSelect }: Props) => {
  useEffect(() => {
   const fetchStreams = async () => {
     try {
-      const res = await fetch("/select/logsql/streams?query=_time:1h");
+      const res = await fetch("/select/logsql/streams?query=*");
       const data = await res.json();
 
       const parsed = data.values.map((v: any) => ({
